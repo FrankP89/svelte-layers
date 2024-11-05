@@ -1,6 +1,6 @@
 <script>
   import Konva from "konva";
-  import { getContext, onDestroy, setContext } from "svelte";
+  import { getContext, onDestroy, setContext, createEventDispatcher } from "svelte";
   import { stageKey, layerKey } from "./context-keys";
 
   // export let draggable = undefined;
@@ -12,8 +12,21 @@
     // draggable: true,
     ...$$props
     }
-    
   );
+
+  const dispatch = createEventDispatcher();
+
+  // Multiple events can be added to the same listener
+  layer.on("dragmove click mousedown", (e) => {
+    
+    dispatch(e.type, e);
+  });
+
+  // layer.on("click", (e) => {
+  //   dispatch("click", e);
+  // });
+
+  
 
   $: if (layer) layer.setAttrs($$props);
 
