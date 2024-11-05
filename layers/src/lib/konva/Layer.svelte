@@ -3,13 +3,19 @@
   import { getContext, onDestroy, setContext } from "svelte";
   import { stageKey, layerKey } from "./context-keys";
 
-  export let draggable = undefined;
+  // export let draggable = undefined;
 
   const { getStage } = getContext(stageKey);
   const stage = getStage();
-  const layer = new Konva.Layer({
-    draggable: true,
-  });
+  const layer = new Konva.Layer(
+    {
+    // draggable: true,
+    ...$$props
+    }
+    
+  );
+
+  $: if (layer) layer.setAttrs($$props);
 
   onDestroy(() => {
     if (layer) layer.destroy();
